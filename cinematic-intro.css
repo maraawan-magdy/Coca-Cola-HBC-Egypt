@@ -1,0 +1,209 @@
+/* Cinematic Intro Styles */
+.cinematic-intro {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #e4002b 0%, #ff073a 50%, #d10026 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.cinematic-intro.hidden {
+  display: none;
+}
+
+/* Background Animation */
+.cinematic-intro::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+  animation: pulseBackground 3s ease-in-out infinite;
+}
+
+@keyframes pulseBackground {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+/* Coca-Cola Logo Watermark */
+.coca-logo-watermark {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  opacity: 0.2;
+  animation: logoPulse 2s ease-in-out infinite;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+@keyframes logoPulse {
+  0%, 100% { transform: scale(1); opacity: 0.2; }
+  50% { transform: scale(1.1); opacity: 0.3; }
+}
+
+/* Skip Button */
+.skip-intro-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.skip-intro-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Message Container */
+.message-container {
+  text-align: center;
+  max-width: 80%;
+}
+
+/* Message Styles */
+.intro-message {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(30px);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.intro-message.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Animation Variations */
+.fade-in {
+  animation: fadeIn 1.5s ease-out forwards;
+}
+
+.fade-out {
+  animation: fadeOut 1.5s ease-in forwards;
+}
+
+.slide-in {
+  animation: slideIn 1.5s ease-out forwards;
+}
+
+.slide-out {
+  animation: slideOut 1.5s ease-in forwards;
+}
+
+.typewriter {
+  overflow: hidden;
+  border-right: 3px solid white;
+  white-space: nowrap;
+  animation: typing 2s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: white; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-30px); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-100px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideOut {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(100px); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .intro-message {
+    font-size: 1.8rem;
+  }
+  
+  .coca-logo-watermark {
+    width: 40px;
+    height: 40px;
+    top: 20px;
+    left: 20px;
+  }
+  
+  .skip-intro-btn {
+    top: 15px;
+    right: 15px;
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .intro-message {
+    font-size: 1.5rem;
+  }
+  
+  .message-container {
+    max-width: 90%;
+  }
+}
+
+/* Sound Toggle */
+.sound-toggle {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sound-toggle svg {
+  width: 20px;
+  height: 20px;
+  fill: white;
+}
