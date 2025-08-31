@@ -1,0 +1,52 @@
+# Test and debug files
+test-*.html
+debug-*.html
+*-test.html
+*-debug.html
+check-*.html
+error-check.html
+clear-intro-cache.html
+firebase-test.html
+display-info*.html
+
+# Development files
+launch.json
+.vscode/
+*.log
+*.tmp
+
+# Documentation files
+TODO.md
+UPGRADE_PLAN.md
+WORLD_CLASS_UPGRADE_PLAN.md
+CINEMATIC_INTRO_SUMMARY.md
+TEST_REPORT.md
+
+# Multiple versions
+index-clean.html
+index-final.html
+index - Copy.html
+index2.html
+script-2.js
+script-fixed.js
+style2.css
+
+# Development scripts
+debug-*.js
+cinematic-intro-*.js
+test-*.js
+check-errors.js
+test-implementation.js
+Untitled-1.js
+
+# Archives
+*.zip
+
+# JSON files (except firebase config)
+*.json
+!firebase-config.js
+
+# Directories
+Arabic/
+Last/
+working-solution/

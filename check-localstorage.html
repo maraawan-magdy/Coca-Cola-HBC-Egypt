@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Check LocalStorage</title>
+</head>
+<body>
+  <h1>LocalStorage Check</h1>
+  <div id="results"></div>
+  
+  <script>
+    const resultsDiv = document.getElementById('results');
+    
+    // Check localStorage status
+    const introPlayed = localStorage.getItem('introPlayed');
+    const themePreference = localStorage.getItem('themePreference');
+    
+    resultsDiv.innerHTML = `
+      <p><strong>introPlayed:</strong> ${introPlayed}</p>
+      <p><strong>themePreference:</strong> ${themePreference}</p>
+      <p><strong>LocalStorage available:</strong> ${typeof Storage !== 'undefined' ? 'Yes' : 'No'}</p>
+    `;
+    
+    // Add buttons to manipulate localStorage
+    const clearBtn = document.createElement('button');
+    clearBtn.textContent = 'Clear introPlayed';
+    clearBtn.onclick = () => {
+      localStorage.removeItem('introPlayed');
+      alert('introPlayed cleared! Refresh the page.');
+    };
+    
+    const setBtn = document.createElement('button');
+    setBtn.textContent = 'Set introPlayed to true';
+    setBtn.onclick = () => {
+      localStorage.setItem('introPlayed', 'true');
+      alert('introPlayed set to true! Refresh the page.');
+    };
+    
+    resultsDiv.appendChild(clearBtn);
+    resultsDiv.appendChild(setBtn);
+  </script>
+</body>
+</html>
