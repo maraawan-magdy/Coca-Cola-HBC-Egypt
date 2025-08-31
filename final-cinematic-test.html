@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coca-Cola HBC - Final Cinematic Test</title>
+  <meta name="theme-color" content="#e4002b">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    .page-section {
+      display: none;
+    }
+    .page-section.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <section id="welcome" class="page-section active">
+    <div class="hero">
+      <div class="big-welcome">Welcome to Coca-Cola Hellenic Factory!</div>
+      <div class="highlight-text">
+        We care deeply about your safety. Please take a moment to understand our safety instructions carefully.<br />
+        Health and safety test is compulsory for visitors of the Coca-Cola HBC<br />
+        so you can enjoy a safe and pleasant visit to our factory.
+      </div>
+      <button class="btn" onclick="showPage('visitor-form')">I Confirm</button>
+    </div>
+  </section>
+
+  <script>
+    // Force the intro to always play by clearing localStorage
+    localStorage.removeItem('introPlayed');
+    console.log("LocalStorage cleared - intro will play");
+    
+    // Add debug info about the welcome section
+    document.addEventListener('DOMContentLoaded', function() {
+      const welcomeSection = document.getElementById('welcome');
+      console.log("DOM Loaded - Welcome section:", welcomeSection);
+      console.log("Computed display:", window.getComputedStyle(welcomeSection).display);
+      console.log("Classes:", welcomeSection.className);
+    });
+  </script>
+
+  <script src="cinematic-intro-enhanced.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

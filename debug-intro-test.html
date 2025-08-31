@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debug Cinematic Intro</title>
+  <style>
+    .page-section {
+      display: none;
+    }
+    .page-section.active {
+      display: block;
+    }
+    .hero {
+      text-align: center;
+      padding: 50px 20px;
+      background: #e4002b;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <section id="welcome" class="page-section active">
+    <div class="hero">
+      <h1>Welcome to Coca-Cola Hellenic Factory!</h1>
+      <p>We care deeply about your safety. Please take a moment to understand our safety instructions carefully.</p>
+      <button onclick="showPage('visitor-form')">I Confirm</button>
+    </div>
+  </section>
+
+  <script>
+    // Force the intro to play by clearing localStorage
+    localStorage.removeItem('introPlayed');
+    console.log("LocalStorage cleared - intro will play");
+  </script>
+
+  <script src="cinematic-intro-enhanced.js"></script>
+</body>
+</html>

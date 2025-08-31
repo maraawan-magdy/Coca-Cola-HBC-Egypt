@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Final Cinematic Intro Test</title>
+  <link rel="stylesheet" href="cinematic-intro.css">
+  <style>
+    /* Copy the main page styles to test in same environment */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .page-section {
+      display: none;
+    }
+    .page-section.active {
+      display: block;
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: #e4002b;
+      color: white;
+    }
+    
+    .hero {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: linear-gradient(135deg, #e4002b 0%, #ff073a 100%);
+      color: white;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="navbar-left">
+        <div style="font-weight: 700; font-size: 24px;">Coca-Cola</div>
+      </div>
+      <div class="nav-links">
+        <a href="#welcome" class="nav-link" style="color: white; text-decoration: none;">Home</a>
+      </div>
+      <div class="navbar-right">
+        <div style="font-weight: 600;">HBC</div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section id="welcome" class="page-section active">
+      <div class="hero">
+        <div class="big-welcome" style="font-size: 3rem; font-weight: 700;">Welcome to Coca-Cola Hellenic Factory!</div>
+        <div class="highlight-text" style="font-size: 1.2rem; margin-top: 1rem;">
+          We care deeply about your safety. Please take a moment to understand our safety instructions carefully.
+        </div>
+        <button class="btn" style="background: white; color: #e4002b; border: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; margin-top: 2rem; cursor: pointer;">
+          I Confirm
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Force clear localStorage and ensure intro plays
+    localStorage.removeItem('introPlayed');
+    console.log("LocalStorage cleared - intro should play");
+    
+    // Add some debugging to track the process
+    const originalInit = CinematicIntro.prototype.init;
+    CinematicIntro.prototype.init = function() {
+      console.log("CinematicIntro.init() called");
+      return originalInit.call(this);
+    };
+  </script>
+  <script src="cinematic-intro-clean-final.js"></script>
+</body>
+</html>

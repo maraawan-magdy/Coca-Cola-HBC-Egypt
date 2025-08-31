@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" data-translate="meta.description" content="Official safety instructions and visitor registration for Coca-Cola HBC Egypt.">
+    <meta name="keywords" data-translate="meta.keywords" content="Coca-Cola, HBC, safety, instructions, visitor, registration, Egypt">
+    <meta name="author" content="Coca-Cola HBC Egypt">
+    
+    <meta property="og:title" data-translate="og.title" content="Visitor Safety Briefing | Coca-Cola HBC Egypt">
+    <meta property="og:description" data-translate="og.description" content="Complete your safety training to visit the Coca-Cola HBC factory.">
+    <meta property="og:image" content="assets/Logo1.png">
+    <meta property="og:url" content="YOUR_WEBSITE_URL_HERE">
+    <meta property="og:type" content="website">
+
+    <title data-translate="meta.title">Visitor Safety Briefing | Coca-Cola HBC Egypt</title>
+    
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"></noscript>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap"></noscript>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-content">
+            <div class="logo-container">
+                <img src="assets/Logo1.png" alt="Coca-Cola Logo" class="logo-main">
+            </div>
+            <nav class="nav-links">
+                <a href="#welcome" class="nav-link active" data-translate="nav.home">Home</a>
+                <a href="#instructions" class="nav-link" data-translate="nav.instructions">Instructions</a>
+            </nav>
+            <div class="header-actions">
+                <button id="language-toggle" class="lang-toggle-btn" aria-label="Toggle language">EN</button>
+                <img src="assets/Logo2.png" alt="Coca-Cola HBC Logo" class="logo-hbc">
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <section id="welcome" class="page-section active">
+            <div class="hero-content fade-in-up">
+                <h1 class="hero-title" data-translate="welcome.title">Welcome to Coca-Cola Hellenic Factory!</h1>
+                <p class="hero-subtitle" data-translate="welcome.subtitle">We care deeply about your safety. Please take a moment to understand our safety instructions carefully.</p>
+                <p class="hero-text" data-translate="welcome.text">Health and safety test is compulsory for visitors of the Coca-Cola HBC so you can enjoy a safe and pleasant visit to our factory.</p>
+                <button class="cta-button" onclick="showPage('visitor-form')" data-translate="welcome.cta">I Confirm</button>
+            </div>
+        </section>
+
+        <section id="visitor-form" class="page-section">
+            <div class="container fade-in">
+                <h2 class="section-title" data-translate="form.title">Visitor Information</h2>
+                <form id="visitorInfo" class="form-grid">
+                    <label for="fullname" data-translate="form.fullname">Full Name:</label>
+                    <input type="text" id="fullname" name="fullname" required aria-label="Full Name"><br>
+                    
+                    <label for="nationalid" data-translate="form.nationalid">National ID:</label>
+                    <input type="text" id="nationalid" name="nationalid" required aria-label="National ID"><br>
+                    
+                    <label for="email" data-translate="form.email">Email Address:</label>
+                    <input type="email" id="email" name="email" required aria-label="Email Address"><br>
+                    
+                    <label for="phone" data-translate="form.phone">Phone Number:</label>
+                    <input type="tel" id="phone" name="phone" required aria-label="Phone Number"><br>
+                    
+                    <label for="bloodtype" data-translate="form.bloodtype">Blood Type:</label>
+                    <select id="bloodtype" name="bloodtype" required aria-label="Blood Type">
+                        <option value="" data-translate="form.select">--Select--</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select><br>
+                    
+                    <button type="button" class="cta-button form-submit" onclick="handleVisitorRegistration()" data-translate="form.next">Next</button>
+                </form>
+            </div>
+        </section>
+
+        <section id="instructions" class="page-section">
+            <div class="container fade-in">
+                <h2 class="section-title" data-translate="instructions.title">Safety Moment</h2>
+                <div class="video-wrapper">
+                    <video id="safety-video" class="instruction-video" preload="metadata" controls aria-label="Safety instructions video">
+                        <source src="assets/Video.mp4" type="video/mp4">
+                        <p data-translate="instructions.video_unsupported">Your browser does not support the video tag.</p>
+                    </video>
+                </div>
+                <button id="next-btn" class="cta-button" onclick="startRulesQuestions()" disabled data-translate="instructions.next">Next</button>
+            </div>
+        </section>
+        
+        <section id="rule1" class="page-section rule-page">
+            <div class="container fade-in">
+                <div class="progress-bar-container"><div id="progressBar" class="progress-bar"></div></div>
+                <img src="assets/Picture1.png" alt="A pictogram of visitors reading rules." class="rule-image" width="400" height="400">
+                <h2 class="rule-heading" data-translate="rule1.heading">Read visitors rules well.</h2>
+                <p class="rule-text" data-translate="rule1.text">I declare that I have learnt all Rules of visitors.</p>
+                <button class="cta-button" onclick="nextPage()" data-translate="rule.confirm">I confirm</button>
+            </div>
+        </section>
+        <section id="question1" class="page-section quiz-page">
+            <div class="container fade-in">
+                <h2 class="question-heading" data-translate="question1.heading">Question 1</h2>
+                <img src="assets/q1.jpg" alt="A visitor wearing a safety helmet and vest." class="rule-image" width="400" height="400">
+                <p class="question-text" data-translate="question1.text">Why is a safety induction required for visitors before entering the factory?</p>
+                <form>
+                    <label class="radio-option"><input type="radio" name="q1" value="a"><span data-translate="question1.option.a">To reduce time spent during the factory tour</span></label>
+                    <label class="radio-option"><input type="radio" name="q1" value="b"><span data-translate="question1.option.b">To ensure visitors understand safety rules and how to act in case of an emergency</span></label>
+                    <label class="radio-option"><input type="radio" name="q1" value="c"><span data-translate="question1.option.c">To assign visitors a job role in the production area</span></label>
+                </form>
+                <button class="cta-button check-answer" onclick="checkAnswer(1, 'b')" data-translate="quiz.check">Check Answer</button>
+                <span class="try-again" id="try-again-1" data-translate="quiz.try_again">Try again</span>
+            </div>
+        </section>
+        <section id="qr-success" class="page-section">
+            <div class="container fade-in">
+                <h2 class="section-title" data-translate="qr.success_title">Access Granted</h2>
+                <p data-translate="qr.success_text">You passed the test. Please present this QR code to factory security:</p>
+                <div id="qrcode-result" class="qrcode-container">
+                    <canvas id="qr-canvas-result" aria-label="QR Code"></canvas>
+                </div>
+                <button class="cta-button" onclick="downloadQRCode('qr-canvas-result')" data-translate="qr.download">Download QR Code</button>
+            </div>
+        </section>
+        
+        <section id="fail" class="page-section">
+            <div class="container fade-in">
+                <h2 class="section-title" data-translate="fail.title">Access Denied</h2>
+                <p data-translate="fail.text">You did not pass the test. Please review the safety rules and try again.</p>
+                <button class="cta-button" onclick="showPage('welcome')" data-translate="fail.cta">Retake Test</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p data-translate="footer.copyright">&copy; 2025 Coca-Cola HBC Egypt. All rights reserved. | Safety First</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js" defer></script>
+    <script src="https://unpkg.com/scrollreveal" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js" defer></script>
+    <script src="firebase-config.js" defer></script>
+    <script src="script.js" defer></script>
+</body>
+</html>

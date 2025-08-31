@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coca-Cola HBC - Final Test</title>
+  <meta name="theme-color" content="#e4002b">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script src="https://unpkg.com/scrollreveal"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script src="firebase-config.js"></script>
+  <style>
+    .page-section {
+      display: none;
+    }
+    .page-section.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="navbar-left">
+        <img src="Logo1.png" alt="Coca-Cola Logo" class="logo-main">
+      </div>
+      <div class="nav-links">
+        <a href="#welcome" class="nav-link" data-section="welcome">Home</a>
+        <a href="#instructions" class="nav-link" data-section="instructions">Instructions</a>
+      </div>
+      <div class="navbar-right">
+        <img src="Logo2.png" alt="Logo Top Right" class="logo-top-right">
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section id="welcome" class="page-section active">
+      <div class="hero">
+        <div class="big-welcome">Welcome to Coca-Cola Hellenic Factory!</div>
+        <div class="highlight-text">
+          We care deeply about your safety. Please take a moment to understand our safety instructions carefully.<br />
+          Health and safety test is compulsory for visitors of the Coca-Cola HBC<br />
+          so you can enjoy a safe and pleasant visit to our factory.
+        </div>
+        <button class="btn" onclick="showPage('visitor-form')">I Confirm</button>
+      </div>
+    </section>
+
+    <!-- Other sections would go here -->
+  </main>
+
+  <footer>
+    &copy; 2025 Coca-Cola HBC Egypt. All rights reserved. | Safety First
+  </footer>
+
+  <script>
+    // Force the intro to always play by clearing localStorage
+    localStorage.removeItem('introPlayed');
+    console.log("LocalStorage cleared - intro will play");
+    
+    // Add debug info about the welcome section
+    document.addEventListener('DOMContentLoaded', function() {
+      const welcomeSection = document.getElementById('welcome');
+      console.log("DOM Loaded - Welcome section:", welcomeSection);
+      console.log("Computed display:", window.getComputedStyle(welcomeSection).display);
+      console.log("Classes:", welcomeSection.className);
+    });
+  </script>
+
+  <script src="cinematic-intro-enhanced.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
