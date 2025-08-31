@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Show Page</title>
+  <style>
+    .page-section {
+      display: none;
+      padding: 50px;
+      background: #e4002b;
+      color: white;
+      text-align: center;
+    }
+    .page-section.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <section id="welcome" class="page-section active">
+    <h1>Welcome to Coca-Cola Hellenic Factory!</h1>
+    <p>We care deeply about your safety.</p>
+  </section>
+
+  <button onclick="testShowContent()">Test Show Content</button>
+  <button onclick="testHideContent()">Test Hide Content</button>
+
+  <script>
+    function testShowContent() {
+      const welcomeSection = document.getElementById('welcome');
+      console.log("Welcome section:", welcomeSection);
+      console.log("Current display:", window.getComputedStyle(welcomeSection).display);
+      console.log("Current classes:", welcomeSection.className);
+      
+      welcomeSection.style.display = '';
+      welcomeSection.classList.add('active');
+      
+      console.log("After showing - display:", window.getComputedStyle(welcomeSection).display);
+      console.log("After showing - classes:", welcomeSection.className);
+    }
+    
+    function testHideContent() {
+      const welcomeSection = document.getElementById('welcome');
+      welcomeSection.style.display = 'none';
+      welcomeSection.classList.remove('active');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Test Cinematic Intro</title>
+  <link rel="stylesheet" href="cinematic-intro.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <h1>Testing Cinematic Intro</h1>
+  <p>Check the browser console for debug information.</p>
+  
+  <button onclick="testIntro()">Test Intro</button>
+  <button onclick="clearStorage()">Clear Storage</button>
+  
+  <script src="cinematic-intro.js"></script>
+  <script>
+    function testIntro() {
+      console.log('Testing cinematic intro...');
+      localStorage.removeItem('introPlayed');
+      const intro = new CinematicIntro();
+      console.log('Intro created:', intro);
+    }
+    
+    function clearStorage() {
+      localStorage.removeItem('introPlayed');
+      console.log('Storage cleared');
+      alert('LocalStorage cleared. Refresh to test intro.');
+    }
+    
+    // Check initial state
+    console.log('Initial introPlayed:', localStorage.getItem('introPlayed'));
+    console.log('CinematicIntro defined:', typeof CinematicIntro);
+  </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple showPage Test</title>
+  <style>
+    .page-section {
+      display: none;
+    }
+    .page-section.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <section id="welcome" class="page-section active">
+    <h1>Welcome Section</h1>
+    <button onclick="testShowPage()">Test showPage Function</button>
+  </section>
+
+  <section id="visitor-form" class="page-section">
+    <h1>Visitor Form Section</h1>
+    <button onclick="showPage('welcome')">Go Back</button>
+  </section>
+
+  <script>
+    function testShowPage() {
+      console.log("Testing showPage function...");
+      try {
+        showPage('visitor-form');
+        console.log("✅ showPage function called successfully");
+      } catch (error) {
+        console.error("❌ Error calling showPage:", error);
+      }
+    }
+  </script>
+
+  <script src="script.js"></script>
+</body>
+</html>

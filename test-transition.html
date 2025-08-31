@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transition Test</title>
+  <link rel="stylesheet" href="cinematic-intro.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #1a1a1a;
+      color: white;
+    }
+    .test-content {
+      padding: 20px;
+      text-align: center;
+      margin-top: 50px;
+    }
+    .page-section {
+      display: none;
+    }
+    .page-section.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <section id="welcome" class="page-section active">
+    <div class="test-content">
+      <h1>Welcome Section</h1>
+      <p>This should appear after the cinematic intro completes.</p>
+      <button onclick="localStorage.removeItem('introPlayed'); location.reload();">
+        Reset Intro (Clear localStorage)
+      </button>
+    </div>
+  </section>
+
+  <script src="cinematic-intro-clean-final.js"></script>
+</body>
+</html>
