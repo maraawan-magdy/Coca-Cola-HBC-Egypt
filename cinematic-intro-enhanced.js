@@ -57,17 +57,9 @@ class CinematicIntro {
     soundToggle.innerHTML = '🔊';
     soundToggle.addEventListener('click', () => this.toggleSound());
 
-    // Add a skip button
-    const skipButton = document.createElement('button');
-    skipButton.innerHTML = 'Skip Intro';
-    skipButton.className = 'skip-intro';
-    skipButton.style.cssText = 'position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px 20px; border-radius: 5px; cursor: pointer;';
-    skipButton.addEventListener('click', () => this.skipIntro());
-
     introContainer.appendChild(logo);
     introContainer.appendChild(messageContainer);
     introContainer.appendChild(soundToggle);
-    introContainer.appendChild(skipButton);
 
     document.body.appendChild(introContainer);
     this.messageContainer = messageContainer;

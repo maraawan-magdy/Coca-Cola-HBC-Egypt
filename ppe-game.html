@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPE Selection Game - Coca-Cola HBC</title>
+    <style>
+        /* Coca-Cola Brand Colors */
+        :root {
+            --coca-red: #e4002b;
+            --coca-red-dark: #b3001f;
+            --coca-red-light: #ff3347;
+            --coca-white: #ffffff;
+            --coca-gray: #f5f5f5;
+            --coca-gray-dark: #666666;
+            --coca-gray-light: #cccccc;
+            --shadow: 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-hover: 0 8px 24px rgba(0,0,0,0.2);
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--coca-gray) 0%, #ffffff 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--coca-white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .game-header {
+            background: var(--coca-red);
+            color: var(--coca-white);
+            padding: 30px;
+            text-align: center;
+        }
+
+        .game-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .game-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .game-area {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        /* Human Figure */
+        .figure-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+        }
+
+        .human-figure {
+            position: relative;
+            width: 200px;
+            height: 350px;
+        }
+
+        .figure-body {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #f0f0f0;
+            border-radius: 50px 50px 20px 20px;
+            border: 3px solid var(--coca-gray-light);
+        }
+
+        .figure-head {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 80px;
+            background: #ffdbac;
+            border-radius: 50%;
+            border: 3px solid var(--coca-gray-light);
+            z-index: 2;
+        }
+
+        .figure-eyes {
+            position: absolute;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: #333;
+            border-radius: 50%;
+            box-shadow: 20px 0 0 #333;
+        }
+
+        .figure-mouth {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 8px;
+            border: 2px solid #333;
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+        }
+
+        /* PPE Items */
+        .ppe-item {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.5s ease;
+            z-index: 3;
+        }
+
+        .ppe-item.active {
+            opacity: 1;
+            transform: scale(1);
+            animation: ppeAppear 0.5s ease;
+        }
+
+        @keyframes ppeAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0) rotate(-180deg);
+            }
+            50% {
+                transform: scale(1.2) rotate(0deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .hair-cover { top: -10px; left: 50%; transform: translateX(-50%); }
+        .ear-protection { top: 15px; left: -15px; }
+        .body-protection { top: 90px; left: 50%; transform: translateX(-50%); }
+        .foot-protection { bottom: -10px; left: 50%; transform: translateX(-50%); }
+
+        /* PPE Selection Area */
+        .selection-area {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .ppe-category {
+            background: var(--coca-gray);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            border: 2px solid transparent;
+        }
+
+        .ppe-category.completed {
+            border-color: var(--coca-red);
+            background: #fff5f5;
+        }
+
+        .category-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--coca-red);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .ppe-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+        }
+
+        .ppe-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            background: var(--coca-white);
+            border: 2px solid var(--coca-gray-light);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            min-height: 100px;
+        }
+
+        .ppe-option:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--coca-red-light);
+        }
+
+        .ppe-option.correct.selected {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .ppe-option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .ppe-emoji {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .ppe-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Game Feedback */
+        .game-feedback {
+            text-align: center;
+            padding: 30px;
+            background: var(--coca-gray);
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+        }
+
+        .success-message {
+            display: none;
+            color: #155724;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .btn {
+            background: var(--coca-red);
+            color: var(--coca-white);
+            border: none;
+            padding: 12px 30px;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin: 0 10px;
+        }
+
+        .btn:hover {
+            background: var(--coca-red-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn:disabled {
+            background: var(--coca-gray-light);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .reset-btn {
+            background: var(--coca-gray-dark);
+        }
+
+        .reset-btn:hover {
+            background: #333;
+        }
+
+        /* Progress Indicator */
+        .progress-container {
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--coca-gray-light);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--coca-red);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .game-area {
+                padding: 20px;
+                gap: 20px;
+            }
+
+            .selection-area {
+                grid-template-columns: 1fr;
+            }
+
+            .ppe-options {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .game-header h1 {
+                font-size: 2rem;
+            }
+
+            .human-figure {
+                width: 150px;
+                height: 280px;
+            }
+
+            .figure-head {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .ppe-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+                margin: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="game-header">
+            <h1>🛡️ PPE Selection Challenge</h1>
+            <p>Select the correct Personal Protective Equipment for each category</p>
+        </div>
+
+        <div class="game-area">
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <!-- Human Figure -->
+            <div class="figure-container">
+                <div class="human-figure">
+                    <div class="figure-body"></div>
+                    <div class="figure-head">
+                        <div class="figure-eyes"></div>
+                        <div class="figure-mouth"></div>
+                    </div>
+                    <div class="ppe-item hair-cover" id="hairCover">👒</div>
+                    <div class="ppe-item ear-protection" id="earProtection">🎧</div>
+                    <div class="ppe-item body-protection" id="bodyProtection">🥼</div>
+                    <div class="ppe-item foot-protection" id="footProtection">👢</div>
+                </div>
+            </div>
+
+            <!-- PPE Selection -->
+            <div class="selection-area">
+                <!-- Hair Protection -->
+                <div class="ppe-category" id="hairCategory">
+                    <div class="category-title">💇 Hair Protection</div>
+                    <div class="ppe-options">
+                        <div class="ppe-option correct" data-category="hair" data-item="hairnet">
+                            <div class="ppe-emoji">👒</div>
+                            <div class="ppe-label">Hairnet</div>
+                        </div>
+                        <div class="ppe-option" data-category="hair" data-item="viking-helmet">
+                            <div class="ppe-emoji">⛑️</div>
+                            <div class="ppe-label">Viking Helmet</div>
+                        </div>
+                        <div class="ppe-option" data-category="hair" data-item="party-hat">
+                            <div class="ppe-emoji">🎩</div>
+                            <div class="ppe-label">Party Hat</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ear Protection -->
+                <div class="ppe-category" id="earCategory">
+                    <div class="category-title">👂 Ear Protection</div>
+                    <div class="ppe-options">
+                        <div class="ppe-option correct" data-category="ear" data-item="earmuffs">
+                            <div class="ppe-emoji">🎧</div>
+                            <div class="ppe-label">Earmuffs</div>
+                        </div>
+                        <div class="ppe-option" data-category="ear" data-item="headphones">
+                            <div class="ppe-emoji">🎵</div>
+                            <div class="ppe-label">Headphones</div>
+                        </div>
+                        <div class="ppe-option" data-category="ear" data-item="earrings">
+                            <div class="ppe-emoji">💍</div>
+                            <div class="ppe-label">Earrings</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Body Protection -->
+                <div class="ppe-category" id="bodyCategory">
+                    <div class="category-title">👔 Body Protection</div>
+                    <div class="ppe-options">
+                        <div class="ppe-option correct" data-category="body" data-item="lab-coat">
+                            <div class="ppe-emoji">🥼</div>
+                            <div class="ppe-label">Lab Coat</div>
+                        </div>
+                        <div class="ppe-option" data-category="body" data-item="superman-cape">
+                            <div class="ppe-emoji">🦸‍♂️</div>
+                            <div class="ppe-label">Superman Cape</div>
+                        </div>
+                        <div class="ppe-option" data-category="body" data-item="tuxedo">
+                            <div class="ppe-emoji">🤵</div>
+                            <div class="ppe-label">Tuxedo</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Foot Protection -->
+                <div class="ppe-category" id="footCategory">
+                    <div class="category-title">👟 Foot Protection</div>
+                    <div class="ppe-options">
+                        <div class="ppe-option correct" data-category="foot" data-item="safety-shoes">
+                            <div class="ppe-emoji">👢</div>
+                            <div class="ppe-label">Safety Shoes</div>
+                        </div>
+                        <div class="ppe-option" data-category="foot" data-item="flip-flops">
+                            <div class="ppe-emoji">🩴</div>
+                            <div class="ppe-label">Flip-flops</div>
+                        </div>
+                        <div class="ppe-option" data-category="foot" data-item="high-heels">
+                            <div class="ppe-emoji">👠</div>
+                            <div class="ppe-label">High Heels</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Feedback -->
+            <div class="game-feedback">
+                <div class="success-message" id="successMessage">
+                    🎉 Well done! You are properly equipped with PPE.
+                </div>
+                <button class="btn" id="continueBtn" onclick="completePPEGame()" disabled>Continue to QR Code</button>
+                <button class="btn reset-btn" id="resetBtn" onclick="resetPPEGame()">Reset Game</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // PPE Game Logic
+        class PPEGame {
+            constructor() {
+                this.selections = {
+                    hair: null,
+                    ear: null,
+                    body: null,
+                    foot: null
+                };
+                this.correctItems = {
+                    hair: 'hairnet',
+                    ear: 'earmuffs',
+                    body: 'lab-coat',
+                    foot: 'safety-shoes'
+                };
+                this.audioEnabled = true;
+                this.initializeGame();
+                this.loadProgress();
+            }
+
+            initializeGame() {
+                // Add event listeners to all PPE options
+                const options = document.querySelectorAll('.ppe-option');
+                options.forEach(option => {
+                    option.addEventListener('click', (e) => this.handleOptionClick(e));
+                });
+
+                // Initialize audio (optional)
+                this.initializeAudio();
+
+                console.log('PPE Game initialized');
+            }
+
+            handleOptionClick(event) {
+                const option = event.currentTarget;
+                const category = option.dataset.category;
+                const item = option.dataset.item;
+                const isCorrect = option.classList.contains('correct');
+
+                console.log(`Clicked: ${category} - ${item} (${isCorrect ? 'correct' : 'incorrect'})`);
+
+                // Remove previous selection in this category
+                const categoryOptions = document.querySelectorAll(`[data-category="${category}"]`);
+                categoryOptions.forEach(opt => {
+                    opt.classList.remove('selected', 'incorrect');
+                });
+
+                if (isCorrect) {
+                    // Correct selection
+                    option.classList.add('selected');
+                    this.selections[category] = item;
+                    this.showPPEOnFigure(category, item);
+                    this.playSound('correct');
+                    this.updateCategoryStatus(category, true);
+                } else {
+                    // Incorrect selection
+                    option.classList.add('incorrect');
+                    this.playSound('incorrect');
+                    this.updateCategoryStatus(category, false);
+
+                    // Remove incorrect class after animation
+                    setTimeout(() => {
+                        option.classList.remove('incorrect');
+                    }, 500);
+                }
+
+                this.updateProgress();
+                this.checkCompletion();
+                this.saveProgress();
+            }
+
+            showPPEOnFigure(category, item) {
+                const ppeElement = document.getElementById(`${category}Cover`) ||
+                                 document.getElementById(`${category}Protection`);
+
+                if (ppeElement) {
+                    // Update emoji based on item
+                    const emojiMap = {
+                        hairnet: '👒',
+                        earmuffs: '🎧',
+                        'lab-coat': '🥼',
+                        'safety-shoes': '👢'
+                    };
+
+                    ppeElement.textContent = emojiMap[item] || '❓';
+                    ppeElement.classList.add('active');
+                }
+            }
+
+            updateCategoryStatus(category, completed) {
+                const categoryElement = document.getElementById(`${category}Category`);
+                if (completed) {
+                    categoryElement.classList.add('completed');
+                } else {
+                    categoryElement.classList.remove('completed');
+                }
+            }
+
+            updateProgress() {
+                const completedCategories = Object.values(this.selections).filter(selection => selection !== null).length;
+                const progress = (completedCategories / 4) * 100;
+                document.getElementById('progressFill').style.width = `${progress}%`;
+            }
+
+            checkCompletion() {
+                const allCorrect = Object.keys(this.correctItems).every(category =>
+                    this.selections[category] === this.correctItems[category]
+                );
+
+                if (allCorrect) {
+                    this.showSuccess();
+                }
+            }
+
+            showSuccess() {
+                document.getElementById('successMessage').classList.add('show');
+                document.getElementById('continueBtn').disabled = false;
+                this.playSound('success');
+            }
+
+            resetGame() {
+                // Reset selections
+                this.selections = {
+                    hair: null,
+                    ear: null,
+                    body: null,
+                    foot: null
+                };
+
+                // Reset UI
+                document.querySelectorAll('.ppe-option').forEach(option => {
+                    option.classList.remove('selected', 'incorrect');
+                });
+
+                document.querySelectorAll('.ppe-category').forEach(category => {
+                    category.classList.remove('completed');
+                });
+
+                document.querySelectorAll('.ppe-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                document.getElementById('successMessage').classList.remove('show');
+                document.getElementById('continueBtn').disabled = true;
+                document.getElementById('progressFill').style.width = '0%';
+
+                // Clear saved progress
+                localStorage.removeItem('ppeGameProgress');
+
+                console.log('PPE Game reset');
+            }
+
+            initializeAudio() {
+                // Create audio elements for feedback (optional)
+                this.sounds = {
+                    correct: new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdB8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXrTp66hVFApGn+DyvmQdBzaP1fLOfCsFJHfH8N2QQAoUXr

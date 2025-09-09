@@ -1,0 +1,348 @@
+/* Light/Dark Theme System for Coca-Cola HBC */
+:root {
+  /* Light Theme (Default) */
+  --theme-bg-primary: var(--white);
+  --theme-bg-secondary: var(--gray-50);
+  --theme-bg-tertiary: var(--gray-100);
+  --theme-text-primary: var(--gray-900);
+  --theme-text-secondary: var(--gray-700);
+  --theme-text-tertiary: var(--gray-600);
+  --theme-border: var(--gray-200);
+  --theme-accent: var(--primary-500);
+  --theme-accent-hover: var(--primary-600);
+
+  /* Component-specific light theme variables */
+  --card-bg: var(--white);
+  --card-border: var(--gray-200);
+  --input-bg: var(--white);
+  --input-border: var(--gray-300);
+  --nav-bg: var(--white);
+  --nav-border: var(--gray-200);
+
+  /* Adjust glassmorphism for light mode */
+  --glass-bg: rgba(255, 255, 255, 0.2);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] {
+  /* Dark Theme */
+  --theme-bg-primary: var(--gray-900);
+  --theme-bg-secondary: var(--gray-800);
+  --theme-bg-tertiary: var(--gray-700);
+  --theme-text-primary: var(--gray-50);
+  --theme-text-secondary: var(--gray-200);
+  --theme-text-tertiary: var(--gray-300);
+  --theme-border: var(--gray-600);
+  --theme-accent: var(--primary-400);
+  --theme-accent-hover: var(--primary-300);
+
+  /* Component-specific dark theme variables */
+  --card-bg: var(--gray-800);
+  --card-border: var(--gray-600);
+  --input-bg: var(--gray-700);
+  --input-border: var(--gray-600);
+  --nav-bg: var(--gray-800);
+  --nav-border: var(--gray-600);
+
+  /* Adjust glassmorphism for dark mode */
+  --glass-bg: rgba(0, 0, 0, 0.2);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Theme Transition */
+* {
+  transition: background-color 0.3s ease, 
+              color 0.3s ease, 
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+/* Theme Toggle Switch */
+.theme-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-toggle:hover {
+  background: var(--glass-bg);
+  border-color: var(--theme-accent);
+  transform: translateY(-1px);
+}
+
+.theme-toggle-switch {
+  position: relative;
+  width: 48px;
+  height: 24px;
+  background: var(--gray-300);
+  border-radius: var(--radius-full);
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .theme-toggle-switch {
+  background: var(--primary-500);
+}
+
+.theme-toggle-switch::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: var(--white);
+  border-radius: 50%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .theme-toggle-switch::before {
+  transform: translateX(24px);
+}
+
+.theme-toggle-icons {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+}
+
+.theme-toggle-icon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.theme-toggle-icon.sun {
+  color: var(--warning);
+}
+
+.theme-toggle-icon.moon {
+  color: var(--gray-400);
+}
+
+[data-theme="dark"] .theme-toggle-icon.sun {
+  opacity: 0.4;
+}
+
+[data-theme="dark"] .theme-toggle-icon.moon {
+  opacity: 1;
+  color: var(--warning-light);
+}
+
+/* System Theme Detection - Only apply dark mode if explicitly requested */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    /* Keep light theme as default, only switch to dark if user explicitly chooses it */
+    /* Dark theme variables are now only applied when data-theme="dark" is set */
+  }
+}
+
+/* Apply Theme Variables to Components */
+body {
+  background-color: var(--theme-bg-primary);
+  color: var(--theme-text-primary);
+}
+
+.navbar {
+  background: var(--nav-bg);
+  border-bottom-color: var(--nav-border);
+}
+
+.container,
+.container-sm,
+.container-md,
+.container-xl {
+  background: var(--card-bg);
+  border-color: var(--card-border);
+}
+
+input,
+select,
+textarea {
+  background-color: var(--input-bg);
+  border-color: var(--input-border);
+  color: var(--theme-text-primary);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--theme-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--theme-accent) 20%, transparent);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--theme-text-tertiary);
+}
+
+.btn {
+  background: var(--theme-accent);
+  color: white;
+}
+
+.btn:hover {
+  background: var(--theme-accent-hover);
+}
+
+.nav-link {
+  color: var(--theme-text-secondary);
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--theme-accent);
+  background-color: color-mix(in srgb, var(--theme-accent) 10%, transparent);
+}
+
+.radio-option {
+  background-color: var(--card-bg);
+  border-color: var(--input-border);
+  color: var(--theme-text-primary);
+}
+
+.radio-option:hover {
+  border-color: var(--theme-accent);
+  background-color: color-mix(in srgb, var(--theme-accent) 5%, transparent);
+}
+
+.radio-option.selected {
+  background-color: var(--theme-accent);
+  border-color: var(--theme-accent);
+  color: white;
+}
+
+.progress-bar-container {
+  background: var(--theme-bg-tertiary);
+}
+
+.qr-container {
+  background: var(--card-bg);
+  border-color: var(--card-border);
+}
+
+canvas {
+  background: var(--card-bg);
+  border-color: var(--input-border);
+}
+
+footer {
+  background: var(--theme-bg-secondary);
+  border-top-color: var(--theme-border);
+}
+
+.footer-text,
+.footer-copyright {
+  color: var(--theme-text-secondary);
+}
+
+/* Hero Section Theme Adaptation */
+.hero {
+  background: linear-gradient(135deg, var(--primary-300), var(--primary-500));
+}
+
+/* Ensure text remains visible in both themes */
+.big-welcome,
+.highlight-text {
+  color: var(--white);
+}
+
+/* Theme Transition Smoothing */
+.theme-transition * {
+  transition: background-color 0.5s ease, 
+              color 0.5s ease, 
+              border-color 0.5s ease,
+              box-shadow 0.5s ease;
+}
+
+/* Reduced motion support for theme transitions */
+@media (prefers-reduced-motion: reduce) {
+  .theme-transition * {
+    transition: none;
+  }
+}
+
+/* Theme Persistence Indicator */
+.theme-loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.theme-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border: 2px solid var(--theme-text-tertiary);
+  border-top: 2px solid var(--theme-accent);
+  border-radius: 50%;
+  animation: theme-spin 1s linear infinite;
+}
+
+@keyframes theme-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Accessibility: High Contrast Mode */
+@media (prefers-contrast: high) {
+  :root {
+    --theme-text-primary: #000000;
+    --theme-text-secondary: #333333;
+    --theme-border: #000000;
+  }
+  
+  [data-theme="dark"] {
+    --theme-text-primary: #ffffff;
+    --theme-text-secondary: #cccccc;
+    --theme-border: #ffffff;
+  }
+  
+  .glass,
+  .glass-dark {
+    background: var(--card-bg);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+/* Print Styles */
+@media print {
+  :root {
+    --theme-bg-primary: white;
+    --theme-text-primary: black;
+    --theme-text-secondary: #333;
+  }
+  
+  .theme-toggle,
+  .btn::before,
+  .animated-bg::before,
+  .particle {
+    display: none !important;
+  }
+  
+  .glass,
+  .glass-dark {
+    background: white;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+}
