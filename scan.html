@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor Check-in - Coca-Cola HBC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #e4002b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .status-message {
+            font-size: 1.2rem;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .visitor-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .info-item {
+            margin: 10px 0;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #e4002b;
+        }
+        .info-value {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Visitor Check-in</h1>
+        <div id="status">
+            <div class="loading-spinner"></div>
+            <p class="status-message info">Processing visitor check-in...</p>
+        </div>
+        <div id="visitor-details" style="display: none;"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
+        import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCXtsQsTi7tiVrYZqWfY29FkwUOS3-UJqg",
+            authDomain: "coca-cola-2abeb.firebaseapp.com",
+            projectId: "coca-cola-2abeb",
+            storageBucket: "coca-cola-2abeb.appspot.com",
+            messagingSenderId: "927564637580",
+            appId: "1:927564637580:web:5060173b7bad897ec8a2a9",
+            measurementId: "G-BZBCY2X8J6"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const webhookUrl = 'https://hook.us2.make.com/huh0ip9453spswolnvlpsluboucjd8qm';
+
+        async function checkInVisitor(visitorId) {
+            try {
+                const statusDiv = document.getElementById('status');
+                const visitorDetailsDiv = document.getElementById('visitor-details');
+
+                statusDiv.innerHTML = '<div class="loading-spinner"></div><p class="status-message info">Fetching visitor data...</p>';
+
+                const docRef = doc(db, 'registrations', visitorId);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+
+                    visitorDetailsDiv.innerHTML = `
+                        <div class="visitor-info">
+                            <div class="info-item">
+                                <span class="info-label">Full Name:</span>
+                                <span class="info-value">${data.fullName || 'Not provided'}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Email:</span>
+                                <span class="info-value">${data.email || 'Not provided'}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Phone:</span>
+                                <span class="info-value">${data.phone || 'Not provided'}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Blood Type:</span>
+                                <span class="info-value">${data.bloodType || 'Not provided'}</span>
+                            </div>
+                        </div>
+                    `;
+                    visitorDetailsDiv.style.display = 'block';
+
+                    statusDiv.innerHTML = '<div class="loading-spinner"></div><p class="status-message info">Sending check-in data...</p>';
+
+                    const checkInData = {
+                        id: visitorId,
+                        fullName: data.fullName || '',
+                        email: data.email || '',
+                        phone: data.phone || '',
+                        bloodType: data.bloodType || '',
+                        gate: 'Main Gate',
+                        timestamp: new Date().toISOString()
+                    };
+
+                    const response = await fetch(webhookUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(checkInData)
+                    });
+
+                    if (response.ok) {
+                        statusDiv.innerHTML = '<p class="status-message success">✅ Visitor checked in successfully</p>';
+                    } else {
+                        throw new Error('Failed to send data to webhook');
+                    }
+                } else {
+                    statusDiv.innerHTML = '<p class="status-message error">❌ Visitor not found in database</p>';
+                }
+            } catch (error) {
+                console.error('Check-in error:', error);
+                document.getElementById('status').innerHTML = '<p class="status-message error">❌ Error during check-in process</p>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const visitorId = urlParams.get('id');
+
+            if (visitorId) {
+                checkInVisitor(visitorId);
+            } else {
+                document.getElementById('status').innerHTML = '<p class="status-message error">❌ No visitor ID provided in URL</p>';
+            }
+        });
+    </script>
+</body>
+</html>

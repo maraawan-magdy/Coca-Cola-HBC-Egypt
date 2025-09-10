@@ -298,7 +298,7 @@ function displayCurrentRuleOrQuestion() {
     // Generate QR code for rule11
     if (currentPageData.id === 'rule11') {
       if (currentVisitorId) {
-        const fullURL = `${window.location.origin}${window.location.pathname.replace('index.html', '')}display-info.html?id=${currentVisitorId}`;
+        const fullURL = `${window.location.origin}${window.location.pathname.replace('index.html', '')}scan.html?id=${currentVisitorId}`;
         generateQRCode(fullURL, 'rule11-qrcanvas');
       } else {
         console.error("No visitor ID found for QR code generation.");
@@ -347,7 +347,7 @@ function endQuiz() {
   if (correctAnswersCount >= 8) {
     showPage('result');
     if (currentVisitorId) {
-      const fullURL = `${window.location.origin}${window.location.pathname.replace('index.html', '')}display-info.html?id=${currentVisitorId}`;
+      const fullURL = `${window.location.origin}${window.location.pathname.replace('index.html', '')}scan.html?id=${currentVisitorId}`;
       generateQRCode(fullURL, 'result-qrcanvas');
     } else {
       console.error("No visitor ID found for QR code generation.");
@@ -597,7 +597,7 @@ displayCurrentRuleOrQuestion = function() {
     // Generate QR code for rule11
     if (currentPageData.id === 'rule11') {
       if (currentVisitorId) {
-        const fullURL = `${window.location.origin}${window.location.pathname.replace('index.html', '')}display-info.html?id=${currentVisitorId}`;
+        const fullURL = `${window.location.origin}${window.location.pathname.replace('index.html', '')}scan.html?id=${currentVisitorId}`;
         generateQRCode(fullURL, 'rule11-qrcanvas');
       } else {
         console.error("No visitor ID found for QR code generation.");
