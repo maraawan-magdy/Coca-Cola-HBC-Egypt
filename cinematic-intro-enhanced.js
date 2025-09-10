@@ -2,17 +2,26 @@
 class CinematicIntro {
   constructor() {
     this.messages = [
-      'Welcome to Coca-Cola Company',
-      'We care deeply about your safety',
-      'Health and safety test is compulsory for visitors of Coca-Cola HBC'
+      {
+        english: 'Welcome to Coca-Cola Company',
+        arabic: 'مرحباً بكم في شركة كوكا كولا'
+      },
+      {
+        english: 'We care deeply about your safety',
+        arabic: 'نحن نهتم بعمق بسلامتكم'
+      },
+      {
+        english: 'Health and safety test is compulsory for visitors of Coca-Cola ',
+        arabic: 'اختبار السلامة إلزامي لزوار كوكا كولا '
+      }
     ];
-    
+
     this.currentMessageIndex = 0;
     this.animationStyle = 'fade';
     this.soundEnabled = true;
     this.hasPlayed = false;
     this.isPlaying = false;
-    
+
     console.log("Initializing Enhanced Cinematic Intro...");
     this.init();
   }
@@ -57,9 +66,17 @@ class CinematicIntro {
     soundToggle.innerHTML = '🔊';
     soundToggle.addEventListener('click', () => this.toggleSound());
 
+    // Add a skip button
+    // const skipButton = document.createElement('button');
+    // skipButton.innerHTML = 'Skip Intro';
+    // skipButton.className = 'skip-intro';
+    // skipButton.style.cssText = 'position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px 20px; border-radius: 5px; cursor: pointer;';
+    // skipButton.addEventListener('click', () => this.skipIntro());
+
     introContainer.appendChild(logo);
     introContainer.appendChild(messageContainer);
     introContainer.appendChild(soundToggle);
+    // introContainer.appendChild(skipButton);
 
     document.body.appendChild(introContainer);
     this.messageContainer = messageContainer;
@@ -95,21 +112,36 @@ class CinematicIntro {
 
     this.messageContainer.innerHTML = '';
 
-    const messageElement = document.createElement('h1');
-    messageElement.className = `intro-message ${this.animationStyle}-in`;
-    messageElement.textContent = message;
-    messageElement.style.cssText = 'color: white; font-size: 24px; text-align: center; margin: 0; padding: 20px;';
+    // Create container for both languages
+    const messageWrapper = document.createElement('div');
+    messageWrapper.className = `intro-message-wrapper ${this.animationStyle}-in`;
+    messageWrapper.style.cssText = 'text-align: center; margin: 0; padding: 20px;';
 
-    this.messageContainer.appendChild(messageElement);
+    // English message
+    const englishElement = document.createElement('div');
+    englishElement.className = 'intro-message-english';
+    englishElement.textContent = message.english;
+    englishElement.style.cssText = 'color: white; font-size: 24px; font-family: "Montserrat", sans-serif; margin-bottom: 10px;';
+
+    // Arabic message
+    const arabicElement = document.createElement('div');
+    arabicElement.className = 'intro-message-arabic';
+    arabicElement.textContent = message.arabic;
+    arabicElement.style.cssText = 'color: white; font-size: 24px; font-family: "Cairo", sans-serif; direction: rtl;';
+
+    messageWrapper.appendChild(englishElement);
+    messageWrapper.appendChild(arabicElement);
+
+    this.messageContainer.appendChild(messageWrapper);
 
     if (this.soundEnabled) {
       this.playSound();
     }
 
     setTimeout(() => {
-      messageElement.classList.remove(`${this.animationStyle}-in`);
-      messageElement.classList.add(`${this.animationStyle}-out`);
-      
+      messageWrapper.classList.remove(`${this.animationStyle}-in`);
+      messageWrapper.classList.add(`${this.animationStyle}-out`);
+
       setTimeout(() => {
         this.showMessage(index + 1);
       }, 1500);
